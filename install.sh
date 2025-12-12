@@ -31,6 +31,7 @@ echo -e "\033[0;32m[TTK] Limpiando instalador...\033[0m"
 if command -v ttk &> /dev/null; then
     echo -e "\033[0;32m[TTK] Iniciando Menú...\033[0m"
     sleep 1
+    exec < /dev/tty
     ttk
 else
     echo -e "\033[0;31m[TTK] Warning: 'ttk' no encontrado en PATH. Reinicia tu sesión o ejecutalo manualmente.\033[0m"
