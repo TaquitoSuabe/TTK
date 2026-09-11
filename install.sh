@@ -1,6 +1,6 @@
 #!/bin/bash
 # ============================================================
-#  TTK (The Taquito Kit) v2.0 - One-Line Installer
+#  TTK (The Taquito Kit) v0.2.1 - One-Line Installer
 # ============================================================
 set -e
 
@@ -17,7 +17,7 @@ GREEN='\033[38;5;46m'
 RED='\033[38;5;196m'
 RESET='\033[0m'
 
-echo -e "${CYAN}[TTK] Preparando Instalador de Suite TTK v2.0...${RESET}"
+echo -e "${CYAN}[TTK] Preparando Instalador de Suite TTK v0.2.1...${RESET}"
 
 # Si existe un binario local en el entorno de desarrollo/pruebas, usarlo
 if [ -f "./build_output/ttk-installer_linux_amd64" ]; then
