@@ -48,9 +48,9 @@ echo -e "${CYAN}[TTK] Iniciando interfaz del instalador...${RESET}"
 
 # Ejecutar con permisos de root requeridos
 if [ "$EUID" -ne 0 ]; then
-    sudo "$DEST"
+    sudo "$DEST" "$@"
 else
-    "$DEST"
+    "$DEST" "$@"
 fi
 
 # Configurar banner de bienvenida en .bashrc si no existe
@@ -61,7 +61,7 @@ setup_bashrc_banner() {
         cat << 'EOF' >> "$BASHRC"
 
 # >>> TTK LOGIN BANNER >>>
-if [ -t 1 ] && [ -z "$TTK_BANNER_SHOWN" ]; then
+if [ -t 1 ] && [ -z "$TTK_BANNER_SHOWN" ] && command -v ttk &> /dev/null; then
     export TTK_BANNER_SHOWN=1
     echo -e "
 \033[38;5;208m┌── THE TAQUITO KIT ───────────────────────────────────┐\033[0m
@@ -85,7 +85,23 @@ fi
 EOF
     fi
 }
-setup_bashrc_banner
+
+remove_bashrc_banner() {
+    local targets=("/root/.bashrc" "/etc/bash.bashrc")
+    [ -n "$HOME" ] && targets+=("$HOME/.bashrc")
+    for f in "${targets[@]}"; do
+        if [ -f "$f" ] && grep -q "TTK LOGIN BANNER" "$f"; then
+            sed -i '/# >>> TTK LOGIN BANNER >>>/,/# <<< TTK LOGIN BANNER <<</d' "$f"
+        fi
+    done
+    rm -f /etc/profile.d/ttk-banner.sh /etc/profile.d/ttk.sh
+}
+
+if [[ "$*" == *uninstall* ]]; then
+    remove_bashrc_banner
+else
+    setup_bashrc_banner
+fi
 
 # Post-instalación: Lanzar menú principal si TTK está instalado
 if command -v ttk &> /dev/null; then
