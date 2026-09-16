@@ -53,6 +53,40 @@ else
     "$DEST"
 fi
 
+# Configurar banner de bienvenida en .bashrc si no existe
+setup_bashrc_banner() {
+    local BASHRC="/root/.bashrc"
+    [ -f "$BASHRC" ] || BASHRC="$HOME/.bashrc"
+    if [ -f "$BASHRC" ] && ! grep -q "TTK LOGIN BANNER" "$BASHRC"; then
+        cat << 'EOF' >> "$BASHRC"
+
+# >>> TTK LOGIN BANNER >>>
+if [ -t 1 ] && [ -z "$TTK_BANNER_SHOWN" ]; then
+    export TTK_BANNER_SHOWN=1
+    echo -e "
+\033[38;5;208m┌── THE TAQUITO KIT // v0.2.1 ─────────────────────────┐\033[0m
+\033[38;5;208m│\033[0m                                                      \033[38;5;208m│\033[0m
+\033[38;5;208m│\033[0m   \033[1;38;5;208m████████╗████████╗██╗  ██╗\033[0m                         \033[38;5;208m│\033[0m
+\033[38;5;208m│\033[0m   \033[1;38;5;208m╚══██╔══╝╚══██╔══╝██║ ██╔╝\033[0m                         \033[38;5;208m│\033[0m
+\033[38;5;208m│\033[0m      \033[1;38;5;208m██║      ██║   █████╔╝\033[0m   \033[38;5;51mSUITE NETWORK & TUNNELS\033[0m\033[38;5;208m│\033[0m
+\033[38;5;208m│\033[0m      \033[1;38;5;208m██║      ██║   ██╔═██╗\033[0m   \033[38;5;244mVersión 0.2.1 Pure Go  \033[0m\033[38;5;208m│\033[0m
+\033[38;5;208m│\033[0m      \033[1;38;5;208m██║      ██║   ██║  ██╗\033[0m                         \033[38;5;208m│\033[0m
+\033[38;5;208m│\033[0m      \033[1;38;5;208m╚═╝      ╚═╝   ╚═╝  ╚═╝\033[0m                         \033[38;5;208m│\033[0m
+\033[38;5;208m│\033[0m                                                      \033[38;5;208m│\033[0m
+\033[38;5;208m│\033[0m  Bienvenido a tu servidor VPS administrado con TTK.  \033[38;5;208m│\033[0m
+\033[38;5;208m│\033[0m                                                      \033[38;5;208m│\033[0m
+\033[38;5;208m│\033[0m  Para abrir el menú de control y túneles:            \033[38;5;208m│\033[0m
+\033[38;5;208m│\033[0m  ➜ \033[1;37mEscribe:\033[0m \033[1;38;5;46mttk\033[0m                                      \033[38;5;208m│\033[0m
+\033[38;5;208m│\033[0m                                                      \033[38;5;208m│\033[0m
+\033[38;5;208m└──────────────────────────────────────────────────────┘\033[0m
+"
+fi
+# <<< TTK LOGIN BANNER <<<
+EOF
+    fi
+}
+setup_bashrc_banner
+
 # Post-instalación: Lanzar menú principal si TTK está instalado
 if command -v ttk &> /dev/null; then
     echo -e "${GREEN}[TTK] Instalación finalizada con éxito. Iniciando TTK...${RESET}"
