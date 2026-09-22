@@ -1,4 +1,4 @@
-# ttk v0.2.1
+# ttk v0.2.2
 
 ```bash
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/TaquitoSuabe/TTK/main/install.sh)"
