@@ -1,6 +1,6 @@
 #!/bin/bash
 # ============================================================
-#  TTK (The Taquito Kit) v0.2.3 - One-Line Installer
+#  TTK (The Taquito Kit) v0.2.6 - One-Line Installer
 # ============================================================
 set -e
 
