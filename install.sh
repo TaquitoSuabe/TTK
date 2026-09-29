@@ -127,33 +127,20 @@ main() {
         fi
     fi
 
-    # Configurar banner de bienvenida en .bashrc si no existe
+    # Configurar banner de bienvenida en .bashrc
     setup_bashrc_banner() {
         local BASHRC="/root/.bashrc"
         [ -f "$BASHRC" ] || BASHRC="$HOME/.bashrc"
-        if [ -f "$BASHRC" ] && ! grep -q "TTK LOGIN BANNER" "$BASHRC"; then
+        if [ -f "$BASHRC" ]; then
+            if grep -q "TTK LOGIN BANNER" "$BASHRC"; then
+                sed -i '/# >>> TTK LOGIN BANNER >>>/,/# <<< TTK LOGIN BANNER <<</d' "$BASHRC"
+            fi
             cat << 'EOF' >> "$BASHRC"
 
 # >>> TTK LOGIN BANNER >>>
 if [ -t 1 ] && [ -z "$TTK_BANNER_SHOWN" ] && command -v ttk &> /dev/null; then
     export TTK_BANNER_SHOWN=1
-    echo -e "
-\033[38;5;208m┌── THE TAQUITO KIT ───────────────────────────────────┐\033[0m
-\033[38;5;208m│\033[0m                                                      \033[38;5;208m│\033[0m
-\033[38;5;208m│\033[0m            \033[1;38;5;208m████████╗  ████████╗  ██╗  ██╗\033[0m            \033[38;5;208m│\033[0m
-\033[38;5;208m│\033[0m            \033[1;38;5;208m╚══██╔══╝  ╚══██╔══╝  ██║ ██╔╝\033[0m            \033[38;5;208m│\033[0m
-\033[38;5;208m│\033[0m            \033[1;38;5;208m   ██║        ██║     █████╔╝ \033[0m            \033[38;5;208m│\033[0m
-\033[38;5;208m│\033[0m            \033[1;38;5;208m   ██║        ██║     ██╔═██╗ \033[0m            \033[38;5;208m│\033[0m
-\033[38;5;208m│\033[0m            \033[1;38;5;208m   ██║        ██║     ██║  ██╗\033[0m            \033[38;5;208m│\033[0m
-\033[38;5;208m│\033[0m            \033[1;38;5;208m   ╚═╝        ╚═╝     ╚═╝  ╚═╝\033[0m            \033[38;5;208m│\033[0m
-\033[38;5;208m│\033[0m                                                      \033[38;5;208m│\033[0m
-\033[38;5;208m│\033[0m  Bienvenido a tu servidor VPS administrado con TTK.  \033[38;5;208m│\033[0m
-\033[38;5;208m│\033[0m                                                      \033[38;5;208m│\033[0m
-\033[38;5;208m│\033[0m       Para abrir el menú de control y túneles:       \033[38;5;208m│\033[0m
-\033[38;5;208m│\033[0m                    ➜ \033[1;37mEscribe:\033[0m \033[1;38;5;46mttk\033[0m                    \033[38;5;208m│\033[0m
-\033[38;5;208m│\033[0m                                                      \033[38;5;208m│\033[0m
-\033[38;5;208m└──────────────────────────────────────────────────────┘\033[0m
-"
+    ttk banner
 fi
 # <<< TTK LOGIN BANNER <<<
 EOF
