@@ -76,12 +76,16 @@ main() {
             local u="$1"
             local d="$2"
             if command -v curl &>/dev/null; then
-                if curl -4 -fL --progress-bar --connect-timeout 15 "$u" -o "$d"; then
+                if curl -fL --progress-bar --connect-timeout 15 "$u" -o "$d"; then
+                    return 0
+                elif curl -4 -fL --progress-bar --connect-timeout 15 "$u" -o "$d"; then
                     return 0
                 fi
             fi
             if command -v wget &>/dev/null; then
-                if wget -4 -q --show-progress --timeout=15 "$u" -O "$d"; then
+                if wget -q --show-progress --timeout=15 "$u" -O "$d"; then
+                    return 0
+                elif wget -4 -q --show-progress --timeout=15 "$u" -O "$d"; then
                     return 0
                 fi
             fi
