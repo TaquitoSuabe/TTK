@@ -99,6 +99,17 @@ main() {
         chmod +x "$DEST"
     fi
 
+    # Pre-descarga de binario principal TTK si no existe localmente
+    if [ ! -f "/tmp/ttk" ] && [ ! -f "./ttk" ] && [ ! -f "/usr/local/bin/ttk" ]; then
+        echo -e "${CYAN}[TTK] Descargando componentes de TTK ($TARGET_ARCH)...${RESET}"
+        if [ "$RELEASE_TAG" == "latest" ]; then
+            TTK_URL="https://github.com/$REPO/releases/latest/download/ttk_linux_${TARGET_ARCH}"
+        else
+            TTK_URL="https://github.com/$REPO/releases/download/$RELEASE_TAG/ttk_linux_${TARGET_ARCH}"
+        fi
+        download_bin "$TTK_URL" "/tmp/ttk" || true
+    fi
+
     echo -e "${CYAN}[TTK] Iniciando interfaz del instalador...${RESET}"
 
     # Detectar si hay una terminal TTY disponible para entrada
